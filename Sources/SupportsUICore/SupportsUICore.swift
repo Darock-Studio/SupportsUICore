@@ -2,12 +2,13 @@ import SwiftUI
 import DarockKit
 
 public struct SUICChatSupportView: View {
+    var projName: String
     @State var titleInput = ""
     @State var isSending = false
     @State var supportId = ""
     @State var isSupportMainPresented = false
-    public init() {
-        
+    public init(projName: String) {
+        self.projName = projName
     }
     public var body: some View {
         List {
@@ -26,7 +27,7 @@ public struct SUICChatSupportView: View {
                         let sde = """
                         \(titleInput)
                         State：0
-                        Project：Darock Browser
+                        Project：\(projName)
                         """.base64Encoded().replacingOccurrences(of: "/", with: "{slash}")
                         DarockKit.Network.shared.requestString("https://fapi.darock.top:65535/radar/cs/new/\(sde)") { respStr, isSuccess in
                             if isSuccess {
@@ -68,7 +69,7 @@ struct SupportMainView: View {
             // Main Chatting
             ScrollView {
                 VStack {
-                    if !isWaitingAccept {
+                    if !isWaitingAccept && chatMessages.isEmpty {
                         Spacer()
                             .frame(height: 50)
                     } else {
@@ -182,10 +183,10 @@ struct SupportMainView: View {
                             .onSubmit {
                                 if sendTextInput != "" {
                                     let apdenc = """
-                                Sender：User
-                                Content：\(sendTextInput)
-                                Time：\(Date.now.timeIntervalSince1970)
-                                """.base64Encoded().replacingOccurrences(of: "/", with: "{slash}")
+                                    Sender：User
+                                    Content：\(sendTextInput)
+                                    Time：\(Date.now.timeIntervalSince1970)
+                                    """.base64Encoded().replacingOccurrences(of: "/", with: "{slash}")
                                     sendTextInput = ""
                                     DarockKit.Network.shared.requestString("https://fapi.darock.top:65535/radar/cs/reply/\(supportId)/\(apdenc)") { respStr, isSuccess in
                                         if isSuccess {
