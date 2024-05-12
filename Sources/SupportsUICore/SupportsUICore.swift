@@ -262,9 +262,12 @@ struct SupportMainView: View {
                 let msgDatas = fixedRawData.split(separator: "---").dropFirst().map { String($0) }
                 if msgDatas.count != previousCount {
                     previousCount = msgDatas.count
-                    if lineSpd.contains("State：2") || lineSpd.contains("State：3") {
+                    let lstt = fixedRawData.split(separator: "State：")[1].split(separator: "\n")[0]
+                    if lstt == "2" || lstt == "3" {
                         isFinished = true
                         return
+                    } else if lstt == "1" {
+                        isWaitingAccept = false
                     }
                     chatMessages.removeAll()
                     for smsg in msgDatas {
