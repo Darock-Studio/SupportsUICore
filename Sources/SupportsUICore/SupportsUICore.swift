@@ -6,6 +6,9 @@ public struct SUICChatSupportView: View {
     @State var isSending = false
     @State var supportId = ""
     @State var isSupportMainPresented = false
+    public init() {
+        
+    }
     public var body: some View {
         List {
             Section {
