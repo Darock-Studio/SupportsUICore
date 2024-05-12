@@ -70,7 +70,7 @@ struct SupportMainView: View {
                 VStack {
                     if !isWaitingAccept {
                         Spacer()
-                            .frame(height: 70)
+                            .frame(height: 50)
                     } else {
                         Text("正在等待支持回应...")
                             .padding()
@@ -262,7 +262,7 @@ struct SupportMainView: View {
                 let msgDatas = fixedRawData.split(separator: "---").dropFirst().map { String($0) }
                 if msgDatas.count != previousCount {
                     previousCount = msgDatas.count
-                    let lstt = fixedRawData.split(separator: "State：")[1].split(separator: "\n")[0]
+                    let lstt = fixedRawData.split(separator: "State：").last?.split(separator: "\n")[0]
                     if lstt == "2" || lstt == "3" {
                         isFinished = true
                         return
